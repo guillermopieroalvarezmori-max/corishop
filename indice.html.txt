@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoriShop</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- React + ReactDOM CDN -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+  <!-- Framer Motion CDN -->
+  <script src="https://unpkg.com/framer-motion/dist/framer-motion.umd.js"></script>
+
+</head>
+<body class="bg-black text-white">
+  <div id="root"></div>
+
+  <script type="text/javascript">
+    const { useState } = React;
+    const { motion, AnimatePresence } = window["framer-motion"];
+
+    // ================== Tu código React aquí ==================
+    function App() {
+      const [cart, setCart] = useState([]);
+      const [selectedCategory, setSelectedCategory] = useState("Todos");
+
+      const allProducts = [
+        { id: 1, name: "Perfume Luxe", price: 120, category: "Perfumes", img: "https://picsum.photos/300/200?1" },
+        { id: 2, name: "Reloj Elegante", price: 250, category: "Accesorios", img: "https://picsum.photos/300/200?2" },
+        { id: 3, name: "Camiseta Premium", price: 99, category: "Ropa", img: "https://picsum.photos/300/200?3" },
+        { id: 4, name: "Perfume Exquisito", price: 150, category: "Perfumes", img: "https://picsum.photos/300/200?4" },
+        { id: 5, name: "Bufanda Lux", price: 80, category: "Accesorios", img: "https://picsum.photos/300/200?5" },
+        { id: 6, name: "Chaqueta Elite", price: 300, category: "Ropa", img: "https://picsum.photos/300/200?6" },
+      ];
+
+      const productsToShow = selectedCategory === "Todos" ? allProducts : allProducts.filter(p => p.category === selectedCategory);
+
+      const addToCart = (p) => setCart([...cart, p]);
+
+      const handleCheckout = () => {
+        if(!cart.length) { alert("Carrito vacío"); return; }
+        const productsList = cart.map(p => `- ${p.name} (S/ ${p.price})`).join("%0A");
+        const total = cart.reduce((acc, i) => acc + i.price, 0);
+        const message = `Hola, quiero comprar estos productos de CoriShop:%0A${productsList}%0ATotal: S/ ${total}`;
+        window.open(`https://wa.me/51986781426?text=${message}`, "_blank");
+        setCart([]);
+      };
+
+      return React.createElement('div', { className: 'min-h-screen' }, 
+        React.createElement('nav', { className: 'flex justify-between items-center p-5 bg-black border-b border-gray-800 sticky top-0 z-50' },
+          React.createElement('h1', { className: 'text-2xl font-bold' }, 'CoriShop'),
+          React.createElement('div', { className: 'flex items-center space-x-4' },
+            React.createElement('button', null, `🛒 ${cart.length}`)
+          )
+        ),
+        React.createElement('section', { className: 'h-[50vh] flex flex-col justify-center items-center text-center bg-[url("https://images.unsplash.com/photo-1521334884684-d80222895322")] bg-cover bg-center' },
+          React.createElement('h2', { className: 'text-5xl font-bold text-white' }, 'CoriShop'),
+          React.createElement('p', { className: 'text-gray-300 mt-2' }, 'Elegancia. Estilo. Exclusividad.')
+        ),
+        React.createElement('section', { className: 'p-10 flex justify-center gap-4' },
+          ['Todos','Perfumes','Ropa','Accesorios'].map(cat =>
+            React.createElement('button', { key: cat, className: `px-4 py-2 border rounded ${selectedCategory===cat?'bg-white text-black':''}`, onClick: () => setSelectedCategory(cat) }, cat)
+          )
+        ),
+        React.createElement('section', { className: 'p-10 grid md:grid-cols-3 gap-4' },
+          productsToShow.map(p =>
+            React.createElement('div', { key: p.id, className: 'bg-black border border-gray-800 rounded p-4' },
+              React.createElement('img', { src: p.img, className: 'rounded mb-2' }),
+              React.createElement('h4', { className: 'font-bold' }, p.name),
+              React.createElement('p', { className: 'text-gray-400' }, p.category),
+              React.createElement('p', { className: 'font-semibold' }, `S/ ${p.price}`),
+              React.createElement('button', { className: 'mt-2 w-full bg-white text-black py-1 rounded', onClick: () => addToCart(p) }, 'Agregar al carrito')
+            )
+          )
+        ),
+        React.createElement('section', { className: 'fixed right-4 top-20 w-80 bg-black/90 p-4 rounded text-white' },
+          React.createElement('h3', { className: 'font-bold mb-2' }, 'Carrito'),
+          cart.map((item,i) => React.createElement('div',{ key:i,className:'flex justify-between mb-1'}, item.name, React.createElement('span', null, `S/ ${item.price}`))),
+          React.createElement('button', { className: 'mt-2 bg-green-500 py-1 w-full rounded', onClick: handleCheckout }, 'Pagar con WhatsApp')
+        )
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+  </script>
+</body>
+</html>
