@@ -35,11 +35,43 @@
 
 <script>
 const allProducts = [
- {name:"Ccori Rubí",price:137.50,cat:"Perfume",img:"https://www.yanbal.com/medias/20014215-01.jpg?context=bWFzdGVyfGltYWdlc3w2Mzc0NXxpbWFnZS9qcGVnfGFHRXdMMmc0TVM4eE16TXdORGszTkRRME1qVXlOaTh5TURBeE5ESXhOVjh3TVM1cWNHY3wxYjgzMDBkN2JmMmUwMTAwZDMyN2E0YTMxMWJmYjNmOTZkMGE5YmY4Zjc4Y2YyZjE3NDVkMzBlZWUyYjNjODlk"},
- {name:"Temptation Mystic",price:87,cat:"Perfume",img:"https://www.yanbal.com/medias/20013695-01.jpg?context=bWFzdGVyfGltYWdlc3wzODU1NTR8aW1hZ2UvanBlZ3xhR1UxTDJnell5OHhNRGMzTkRVeE5UWTNPVEkyTWk4eU1EQXhNelk1TlY4d01TNXFjR2N8ZjIzZDE5M2YwNjFlNGYwMmVhYWQ0NTY2ZDFlMDE5NDA1ZmMyM2NlZWFlOWI2MTM4YjY5NTExMDgxYjNlM2JhYg"},
- {name:"Cielo en Rosa",price:89.50,cat:"Perfume",img:"https://www.yanbal.com/medias/20013982-01.jpg?context=bWFzdGVyfGltYWdlc3wzMzM3OTJ8aW1hZ2UvanBlZ3xhRGswTDJnd01pOHhNRGN3TnpJeU56ZzJPVEl4TkM4eU1EQXhNems0TWw4d01TNXFjR2N8OWE0NTliMTBkNWNkMWFlY2MzNzBkNGZjMzg1YWUwY2NhMjc4MGNjNzlmNmZkZmNhYzYyNWI2ZTk3NjgzNDZiYQ"},
- {name:"Osadía",price:99.50,cat:"Perfume",img:"https://www.yanbal.com/medias/20013122-01.jpg?context=bWFzdGVyfGltYWdlc3wxODUyNDd8aW1hZ2UvanBlZ3xhREZsTDJoall5OHhNVFkyTXpBeE5UZ3pOemN5Tmk4eU1EQXhNekV5TWw4d01TNXFjR2N8MTJhYWYxMmQ3ZmI1ZmZlNWI1YzEwMzg5NWFkZjgwODZiYjYyOTk5NzQ5MjJiYmRjMmE5MTkxNGVlNzdiMjk4YQ"},
- {name:"Set Temptation Mujer: Eau de Parfum + Desodorante + Jabón Perfumad",price:99.50,cat:"Perfume",img:"https://www.yanbal.com/medias/14700059-es-PE-01.jpg?context=bWFzdGVyfGltYWdlc3w0MTUwMjF8aW1hZ2UvanBlZ3xhR001TDJnMk5TOHhNekE1TXpBeU56RXhPVEV6TkM4eE5EY3dNREExT1Y5bGMxOVFSVjh3TVM1cWNHY3wzOWY0NmU2NDliNjg2ZDNhYzBlZTQxOTgyNDU1YTk2OTY4MGNiMjQ1OGI2ZTQ4NGYzZjY0NjViNzhiOTg3MWUy"}
+
+ // 🌸 PERFUMES
+ {name:"Ccori Rubí",price:137.50,cat:"Perfume",img:"https://images.unsplash.com/photo-1594035910387-fea47794261f"},
+ {name:"Set Temptation",price:99.50,cat:"Perfume",img:"https://images.unsplash.com/photo-1588405748880-12d1d2a59d75"},
+ {name:"Temptation Mujer",price:119,cat:"Perfume",img:"https://images.unsplash.com/photo-1615634260167-c8cdede054de"},
+ {name:"Xiss Active",price:49.50,cat:"Perfume",img:"https://images.unsplash.com/photo-1600185365483-26d7a4cc7519"},
+ {name:"Xiss",price:49.50,cat:"Perfume",img:"https://images.unsplash.com/photo-1595425964079-6b6b1b7c4c7c"},
+ {name:"Musk Selecto",price:93.50,cat:"Perfume",img:"https://images.unsplash.com/photo-1608571423902-eed4a5ad8108"},
+ {name:"Selecto 2x1",price:170,cat:"Perfume",img:"https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd"},
+ {name:"Mix & Chic",price:41.50,cat:"Perfume",img:"https://images.unsplash.com/photo-1619994403073-2cec5b5d8b9f"},
+ {name:"Eau Vitale",price:46,cat:"Perfume",img:"https://images.unsplash.com/photo-1587017539504-67cfbddac569"},
+ {name:"L’Essence 2x1",price:68,cat:"Perfume",img:"https://images.unsplash.com/photo-1592945403244-b3fbafd7f539"},
+
+ // 💄 MAQUILLAJE
+ {name:"Base Líquida Yanbal",price:65,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1596462502278-27bfdc403348"},
+ {name:"Corrector Facial",price:39,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1607602132700-0682588a5f82"},
+ {name:"Polvo Compacto",price:55,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1612817159949-195b6eb9e31a"},
+ {name:"Rubor Facial",price:45,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1586495777744-4413f21062fa"},
+ {name:"Labial Mate Pro",price:39,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1585386959984-a41552231658"},
+ {name:"Labial Hidratante",price:35,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1615634260167-c8cdede054de"},
+ {name:"Gloss Brillante",price:30,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1583241800698-3d8b0e9bb5c7"},
+ {name:"Máscara de Pestañas",price:55,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1599733589046-10c005739f09"},
+ {name:"Delineador Líquido",price:42,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1583001931096-959e9a1a6223"},
+ {name:"Sombras de Ojos",price:60,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1512496015851-a90fb38ba796"},
+
+ // 💍 JOYERÍA
+ {name:"Collar Elegante",price:75,cat:"Joyería",img:"https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f"},
+ {name:"Aretes Dorados",price:45,cat:"Joyería",img:"https://images.unsplash.com/photo-1588444650700-6c4b8f6b42f5"},
+ {name:"Pulsera Fina",price:50,cat:"Joyería",img:"https://images.unsplash.com/photo-1611599537903-4d3a8a798edc"},
+ {name:"Anillo Ajustable",price:40,cat:"Joyería",img:"https://images.unsplash.com/photo-1602752275663-3a7b9d5b4c3b"},
+ {name:"Set Collar + Aretes",price:95,cat:"Joyería",img:"https://images.unsplash.com/photo-1588444650700-6c4b8f6b42f5"},
+ {name:"Aretes Perla",price:55,cat:"Joyería",img:"https://images.unsplash.com/photo-1617038220319-276d3cfab638"},
+ {name:"Collar Corazón",price:60,cat:"Joyería",img:"https://images.unsplash.com/photo-1608043152269-423dbba4e7e1"},
+ {name:"Pulsera Dorada",price:48,cat:"Joyería",img:"https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f"},
+ {name:"Anillo Brillante",price:52,cat:"Joyería",img:"https://images.unsplash.com/photo-1605100804763-247f67b3557e"},
+ {name:"Set Joyería Premium",price:120,cat:"Joyería",img:"https://images.unsplash.com/photo-1617038220319-276d3cfab638"}
+
 ];
 
 let cart=[];
