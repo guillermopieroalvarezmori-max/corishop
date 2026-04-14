@@ -15,14 +15,15 @@
 
 <section class="text-center p-10">
   <h2 class="text-4xl font-bold">CoriShop</h2>
-  <p class="text-gray-400">Perfumes, Maquillaje y Joyerías</p>
+  <p class="text-gray-400">Perfumes, Maquillaje,cuidados y Joyerías</p>
 </section>
 
 <div class="flex justify-center gap-4 mb-6">
   <button onclick="filter('Todos')" class="px-4 py-2 border">Todos</button>
   <button onclick="filter('Perfume')" class="px-4 py-2 border">Perfumes</button>
   <button onclick="filter('Maquillaje')" class="px-4 py-2 border">Maquillaje</button>
-  <button onclick="filter('Joyería')" class="px-4 py-2 border">Joyería</button>
+  <button onclick="filter('Cuidado')" class="px-4 py-2 border">Cuidado</button>
+   <button onclick="filter('Joyería')" class="px-4 py-2 border">Joyería</button>
 </div>
 
 <section id="products" class="grid md:grid-cols-3 gap-6 p-10"></section>
@@ -37,43 +38,85 @@
 const allProducts = [
 
  // 🌸 PERFUMES
- {name:"Ccori Rubí",price:137.50,cat:"Perfume",img:"https://www.yanbal.com/medias/500Wx500H-Yanbal-OriginalFormat-20014215-02.jpg?context=bWFzdGVyfGltYWdlc3wyNjg3MnxpbWFnZS9qcGVnfGFEZ3pMMmhtWXk4eE16TXdORGszTlRrME9UZzFOQzgxTURCWGVEVXdNRWhmV1dGdVltRnNMVTl5YVdkcGJtRnNSbTl5YldGMFh6SXdNREUwTWpFMVh6QXlMbXB3Wnd8YTc0NmZjNzZjNTVlNmNkMjVlNDAwY2EzODQ1NTYwMGEyMDM2MWU4ZDFiZDUzMTZiNTI4N2ExOWQ2NGY2MWU2Mg"},
- {name:"Set Temptation Mujer: Eau de Parfum + Desodorante + Jabón Perfumad",price:99.50,cat:"Perfume",img:"https://www.yanbal.com/medias/14700059-es-PE-01.jpg?context=bWFzdGVyfGltYWdlc3w0MTUwMjF8aW1hZ2UvanBlZ3xhR001TDJnMk5TOHhNekE1TXpBeU56RXhPVEV6TkM4eE5EY3dNREExT1Y5bGMxOVFSVjh3TVM1cWNHY3wzOWY0NmU2NDliNjg2ZDNhYzBlZTQxOTgyNDU1YTk2OTY4MGNiMjQ1OGI2ZTQ4NGYzZjY0NjViNzhiOTg3MWUy"},
- {name:"Temptation Mystic",price:119,cat:"Perfume",img:"https://www.yanbal.com/medias/500Wx500H-Yanbal-OriginalFormat-20013695-02.jpg?context=bWFzdGVyfGltYWdlc3w5MjA0MnxpbWFnZS9qcGVnfGFERmxMMmhpT1M4eE1EYzNORFUyTmpjNU56TTBNaTgxTURCWGVEVXdNRWhmV1dGdVltRnNMVTl5YVdkcGJtRnNSbTl5YldGMFh6SXdNREV6TmprMVh6QXlMbXB3Wnd8YzQzOGExMDk2YmZmZWM1MGMwZjk1NzZmYTZlNTgzNzkxYjYwZmM4OGE4NTdmNmMzZjhhNWRmZDQ3NzBiNDg5MA"},
- {name:"Xiss Active",price:49.50,cat:"Perfume",img:"https://images.unsplash.com/photo-1600185365483-26d7a4cc7519"},
- {name:"Xiss",price:49.50,cat:"Perfume",img:"https://images.unsplash.com/photo-1595425964079-6b6b1b7c4c7c"},
- {name:"Musk Selecto",price:93.50,cat:"Perfume",img:"https://images.unsplash.com/photo-1608571423902-eed4a5ad8108"},
- {name:"Selecto 2x1",price:170,cat:"Perfume",img:"https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd"},
- {name:"Mix & Chic",price:41.50,cat:"Perfume",img:"https://images.unsplash.com/photo-1619994403073-2cec5b5d8b9f"},
- {name:"Eau Vitale",price:46,cat:"Perfume",img:"https://images.unsplash.com/photo-1587017539504-67cfbddac569"},
- {name:"L’Essence 2x1",price:68,cat:"Perfume",img:"https://images.unsplash.com/photo-1592945403244-b3fbafd7f539"},
+ {name:"Ccori Rubí",price:137.50,cat:"Perfume"},
+ {name:"Ccori Rosé",price:135,cat:"Perfume"},
+ {name:"Ccori Pasión",price:140,cat:"Perfume"},
+ {name:"Temptation Mujer",price:119,cat:"Perfume"},
+ {name:"Temptation Mystic",price:150,cat:"Perfume"},
+ {name:"Osadía",price:160,cat:"Perfume"},
+ {name:"Ser Eau de Parfum",price:170,cat:"Perfume"},
+ {name:"Cielo en Rosa",price:130,cat:"Perfume"},
+ {name:"Cielo Eau de Parfum",price:125,cat:"Perfume"},
+ {name:"Puro Amor",price:110,cat:"Perfume"},
+ {name:"Celos",price:115,cat:"Perfume"},
+ {name:"Musk",price:90,cat:"Perfume"},
+ {name:"Adrenaline",price:95,cat:"Perfume"},
+ {name:"OHM Hombre",price:100,cat:"Perfume"},
+ {name:"Solo",price:105,cat:"Perfume"},
+ {name:"Divina Chic",price:120,cat:"Perfume"},
 
- // 💄 MAQUILLAJE
- {name:"Base Líquida Yanbal",price:65,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1596462502278-27bfdc403348"},
- {name:"Corrector Facial",price:39,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1607602132700-0682588a5f82"},
- {name:"Polvo Compacto",price:55,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1612817159949-195b6eb9e31a"},
- {name:"Rubor Facial",price:45,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1586495777744-4413f21062fa"},
- {name:"Labial Mate Pro",price:39,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1585386959984-a41552231658"},
- {name:"Labial Hidratante",price:35,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1615634260167-c8cdede054de"},
- {name:"Gloss Brillante",price:30,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1583241800698-3d8b0e9bb5c7"},
- {name:"Máscara de Pestañas",price:55,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1599733589046-10c005739f09"},
- {name:"Delineador Líquido",price:42,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1583001931096-959e9a1a6223"},
- {name:"Sombras de Ojos",price:60,cat:"Maquillaje",img:"https://images.unsplash.com/photo-1512496015851-a90fb38ba796"},
+ // 🌿 COLONIAS
+ {name:"Mix & Chic",price:41.50,cat:"Perfume"},
+ {name:"Eau Vitale",price:46,cat:"Perfume"},
+ {name:"L’Essence",price:68,cat:"Perfume"},
+ {name:"Xiss",price:49.50,cat:"Perfume"},
+ {name:"Xiss Active",price:49.50,cat:"Perfume"},
+
+ // 🎁 SETS
+ {name:"Set Temptation",price:99.50,cat:"Perfume"},
+ {name:"Set Ser",price:120,cat:"Perfume"},
+ {name:"Set Oh La La",price:110,cat:"Perfume"},
+
+ // 💄 MAQUILLAJE ROSTRO
+ {name:"Base Antiedad Lifting",price:65,cat:"Maquillaje"},
+ {name:"Corrector Antiedad",price:39,cat:"Maquillaje"},
+ {name:"Polvo Compacto",price:55,cat:"Maquillaje"},
+ {name:"Rubor Compacto",price:45,cat:"Maquillaje"},
+ {name:"Iluminador Líquido",price:50,cat:"Maquillaje"},
+
+ // 💋 LABIOS
+ {name:"Labial Dúo Infinity Shine",price:39,cat:"Maquillaje"},
+ {name:"Labial Mate",price:35,cat:"Maquillaje"},
+ {name:"Labial Hidratante",price:35,cat:"Maquillaje"},
+ {name:"Hydra Lips",price:38,cat:"Maquillaje"},
+ {name:"Gloss Labial",price:30,cat:"Maquillaje"},
+
+ // 👁️ OJOS
+ {name:"Máscara de Pestañas",price:55,cat:"Maquillaje"},
+ {name:"Delineador Líquido",price:42,cat:"Maquillaje"},
+ {name:"Sombras de Ojos",price:60,cat:"Maquillaje"},
+
+ // 🧴 CUIDADO FACIAL
+ {name:"Agua Micelar",price:45,cat:"Cuidado"},
+ {name:"Desmaquillador Bifásico",price:48,cat:"Cuidado"},
+ {name:"Crema Antiedad",price:120,cat:"Cuidado"},
+ {name:"Serum Facial",price:130,cat:"Cuidado"},
+
+ // 🧴 CUIDADO CORPORAL
+ {name:"Loción Corporal",price:40,cat:"Cuidado"},
+ {name:"Crema Hidratante",price:42,cat:"Cuidado"},
+ {name:"Jabón Perfumado",price:25,cat:"Cuidado"},
+
+ // 🌿 NATURALES
+ {name:"Bio Milk Shampoo",price:35,cat:"Cuidado"},
+ {name:"Lúcuma Shampoo",price:35,cat:"Cuidado"},
+ {name:"Uña de Gato Tratamiento",price:45,cat:"Cuidado"},
+
+ // ☀️ PROTECCIÓN
+ {name:"Total Block Protector Solar",price:70,cat:"Cuidado"},
+ {name:"Totalist Crema 5 en 1",price:95,cat:"Cuidado"},
+ {name:"Control Blanc",price:110,cat:"Cuidado"},
 
  // 💍 JOYERÍA
- {name:"Collar Elegante",price:75,cat:"Joyería",img:"https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f"},
- {name:"Aretes Dorados",price:45,cat:"Joyería",img:"https://images.unsplash.com/photo-1588444650700-6c4b8f6b42f5"},
- {name:"Pulsera Fina",price:50,cat:"Joyería",img:"https://images.unsplash.com/photo-1611599537903-4d3a8a798edc"},
- {name:"Anillo Ajustable",price:40,cat:"Joyería",img:"https://images.unsplash.com/photo-1602752275663-3a7b9d5b4c3b"},
- {name:"Set Collar + Aretes",price:95,cat:"Joyería",img:"https://images.unsplash.com/photo-1588444650700-6c4b8f6b42f5"},
- {name:"Aretes Perla",price:55,cat:"Joyería",img:"https://images.unsplash.com/photo-1617038220319-276d3cfab638"},
- {name:"Collar Corazón",price:60,cat:"Joyería",img:"https://images.unsplash.com/photo-1608043152269-423dbba4e7e1"},
- {name:"Pulsera Dorada",price:48,cat:"Joyería",img:"https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f"},
- {name:"Anillo Brillante",price:52,cat:"Joyería",img:"https://images.unsplash.com/photo-1605100804763-247f67b3557e"},
- {name:"Set Joyería Premium",price:120,cat:"Joyería",img:"https://images.unsplash.com/photo-1617038220319-276d3cfab638"}
+ {name:"Collar Gyra Jade",price:90,cat:"Joyería"},
+ {name:"Aretes Gyra Jade",price:60,cat:"Joyería"},
+ {name:"Collar Floralia",price:85,cat:"Joyería"},
+ {name:"Aretes Floralia",price:55,cat:"Joyería"},
+ {name:"Pulsera Elegante",price:50,cat:"Joyería"},
+ {name:"Anillo Ajustable",price:40,cat:"Joyería"},
+ {name:"Set Collar + Aretes",price:110,cat:"Joyería"}
 
 ];
-
 let cart=[];
 
 function render(products){
