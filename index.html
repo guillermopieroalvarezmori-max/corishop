@@ -3,258 +3,148 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>CoriShop FINAL</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoriShop</title>
 <script src="https://cdn.tailwindcss.com"></script>
-
-<!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
 </head>
 
 <body class="bg-black text-white">
 
 <nav class="flex justify-between p-5 border-b border-gray-800">
-  <h1 class="text-2xl font-bold">CoriShop</h1>
-  <span id="cart-count">🛒 0</span>
+<h1 class="text-2xl font-bold">CoriShop</h1>
+<span id="cart-count">🛒 0</span>
 </nav>
 
-<section class="text-center p-6">
-  <input id="search" placeholder="Buscar producto..." class="px-4 py-2 text-black">
+<section class="text-center p-10">
+<h2 class="text-4xl font-bold">CoriShop</h2>
+<p class="text-gray-400">Perfumes, Maquillaje,cuidado y Joyerías</p>
 </section>
 
-<section id="products" class="grid md:grid-cols-3 gap-6 p-6"></section>
+<div class="flex justify-center gap-4 mb-6">
+<button onclick="filter('Todos')" class="px-4 py-2 border">Todos</button>
+<button onclick="filter('Perfume')" class="px-4 py-2 border">Perfumes</button>
+<button onclick="filter('Maquillaje')" class="px-4 py-2 border">Maquillaje</button>
+<button onclick="filter('Cuidado')" class="px-4 py-2 border">Cuidado</button>
+<button onclick="filter('Joyería')" class="px-4 py-2 border">Joyería</button>
+</div>
 
-<!-- LOGIN -->
-<section class="p-6 border-t border-gray-800">
-  <h2>Login Admin</h2>
-  <input id="email" placeholder="Email" class="text-black px-2">
-  <input id="password" type="password" placeholder="Password" class="text-black px-2">
-  <button onclick="login()" class="bg-blue-500 px-2">Entrar</button>
-</section>
-
-<!-- ADMIN -->
-<section id="admin" style="display:none" class="p-6 border-t border-gray-800">
-  <h2>Panel Admin</h2>
-  <input id="name" placeholder="Nombre" class="text-black px-2">
-  <input id="price" placeholder="Precio" class="text-black px-2">
-  <input id="cat" placeholder="Categoría" class="text-black px-2">
-  <input id="img" placeholder="Imagen URL" class="text-black px-2">
-  <button onclick="addProduct()" class="bg-green-500 px-2">Agregar</button>
-</section>
+<section id="products" class="grid md:grid-cols-3 gap-6 p-10"></section>
 
 <div class="fixed bottom-5 right-5">
-  <button onclick="checkout()" class="bg-green-500 px-4 py-2 rounded">
-    WhatsApp
-  </button>
+<button onclick="checkout()" class="bg-green-500 px-4 py-2 rounded">
+Comprar por WhatsApp
+</button>
 </div>
 
 <script>
 
-// 🔥 CONFIG FIREBASE (REEMPLAZA ESTO)
-const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_DOMINIO",
-  projectId: "TU_PROJECT_ID"
-};
+const allProducts = [
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const auth = firebase.auth();
+ // PERFUMES
+ {name:"Ccori Rubí",price:137.50,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Ccori Rosé",price:135,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Ccori Pasión",price:140,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Temptation Mujer",price:119,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Temptation Mystic",price:150,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Osadía",price:160,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Ser Eau de Parfum",price:170,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Cielo en Rosa",price:130,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Cielo Eau de Parfum",price:125,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Puro Amor",price:110,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Celos",price:115,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Musk",price:90,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Adrenaline",price:95,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"OHM Hombre",price:100,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Solo",price:105,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Divina Chic",price:120,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Mix & Chic",price:41.50,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Eau Vitale",price:46,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"L’Essence",price:68,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Xiss",price:49.50,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Xiss Active",price:49.50,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Set Temptation",price:99.50,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Set Ser",price:120,cat:"Perfume",img:"https://via.placeholder.com/300"},
+ {name:"Set Oh La La",price:110,cat:"Perfume",img:"https://via.placeholder.com/300"},
 
-let cart = [];
-let products = [];
+ // MAQUILLAJE
+ {name:"Base Antiedad Lifting",price:65,cat:"Maquillaje",img:"https://via.placeholder.com/300"},
+ {name:"Corrector Antiedad",price:39,cat:"Maquillaje",img:"https://via.placeholder.com/300"},
+ {name:"Polvo Compacto",price:55,cat:"Maquillaje",img:"https://via.placeholder.com/300"},
+ {name:"Rubor Compacto",price:45,cat:"Maquillaje",img:"https://via.placeholder.com/300"},
+ {name:"Iluminador Líquido",price:50,cat:"Maquillaje",img:"https://via.placeholder.com/300"},
+ {name:"Labial Dúo Infinity Shine",price:39,cat:"Maquillaje",img:"https://via.placeholder.com/300"},
+ {name:"Labial Mate",price:35,cat:"Maquillaje",img:"https://via.placeholder.com/300"},
+ {name:"Labial Hidratante",price:35,cat:"Maquillaje",img:"https://via.placeholder.com/300"},
+ {name:"Hydra Lips",price:38,cat:"Maquillaje",img:"https://via.placeholder.com/300"},
+ {name:"Gloss Labial",price:30,cat:"Maquillaje",img:"https://via.placeholder.com/300"},
+ {name:"Máscara de Pestañas",price:55,cat:"Maquillaje",img:"https://via.placeholder.com/300"},
+ {name:"Delineador Líquido",price:42,cat:"Maquillaje",img:"https://via.placeholder.com/300"},
+ {name:"Sombras de Ojos",price:60,cat:"Maquillaje",img:"https://via.placeholder.com/300"},
 
-// 🔄 CARGAR PRODUCTOS
-function loadProducts(){
- db.collection("products").onSnapshot(snapshot=>{
-  products=[];
-  let html="";
-  snapshot.forEach(doc=>{
-   const p = doc.data();
-   products.push(p);
-   html+=`
-   <div class="border p-4 rounded">
-    <img src="${p.img || 'https://via.placeholder.com/300'}" class="h-40 w-full object-cover">
-    <h3>${p.name}</h3>
+ // CUIDADO
+ {name:"Agua Micelar",price:45,cat:"Cuidado",img:"https://via.placeholder.com/300"},
+ {name:"Desmaquillador Bifásico",price:48,cat:"Cuidado",img:"https://via.placeholder.com/300"},
+ {name:"Crema Antiedad",price:120,cat:"Cuidado",img:"https://via.placeholder.com/300"},
+ {name:"Serum Facial",price:130,cat:"Cuidado",img:"https://via.placeholder.com/300"},
+ {name:"Loción Corporal",price:40,cat:"Cuidado",img:"https://via.placeholder.com/300"},
+ {name:"Crema Hidratante",price:42,cat:"Cuidado",img:"https://via.placeholder.com/300"},
+ {name:"Jabón Perfumado",price:25,cat:"Cuidado",img:"https://via.placeholder.com/300"},
+ {name:"Bio Milk Shampoo",price:35,cat:"Cuidado",img:"https://via.placeholder.com/300"},
+ {name:"Lúcuma Shampoo",price:35,cat:"Cuidado",img:"https://via.placeholder.com/300"},
+ {name:"Uña de Gato Tratamiento",price:45,cat:"Cuidado",img:"https://via.placeholder.com/300"},
+ {name:"Total Block Protector Solar",price:70,cat:"Cuidado",img:"https://via.placeholder.com/300"},
+ {name:"Totalist Crema 5 en 1",price:95,cat:"Cuidado",img:"https://via.placeholder.com/300"},
+ {name:"Control Blanc",price:110,cat:"Cuidado",img:"https://via.placeholder.com/300"},
+
+ // JOYERÍA
+ {name:"Collar Gyra Jade",price:90,cat:"Joyería",img:"https://via.placeholder.com/300"},
+ {name:"Aretes Gyra Jade",price:60,cat:"Joyería",img:"https://via.placeholder.com/300"},
+ {name:"Collar Floralia",price:85,cat:"Joyería",img:"https://via.placeholder.com/300"},
+ {name:"Aretes Floralia",price:55,cat:"Joyería",img:"https://via.placeholder.com/300"},
+ {name:"Pulsera Elegante",price:50,cat:"Joyería",img:"https://via.placeholder.com/300"},
+ {name:"Anillo Ajustable",price:40,cat:"Joyería",img:"https://via.placeholder.com/300"},
+ {name:"Set Collar + Aretes",price:110,cat:"Joyería",img:"https://via.placeholder.com/300"}
+
+];
+
+let cart=[];
+
+function render(products){
+ const container=document.getElementById("products");
+ container.innerHTML="";
+ products.forEach(p=>{
+  container.innerHTML+=`
+  <div class="border border-gray-800 p-4 rounded">
+    <img src="${p.img}" class="mb-2 rounded w-full h-48 object-cover">
+    <h3 class="font-bold">${p.name}</h3>
     <p>S/${p.price}</p>
-    <button onclick="add('${p.name}',${p.price})" class="bg-white text-black w-full mt-2">Agregar</button>
-   </div>`;
-  });
-  document.getElementById("products").innerHTML = html;
+    <button onclick="add('${p.name}',${p.price})" class="bg-white text-black w-full mt-2 py-1 rounded">Comprar</button>
+  </div>`;
  });
 }
 
-// 🛒 CARRITO
+function filter(cat){
+ if(cat==="Todos"){render(allProducts);}
+ else{render(allProducts.filter(p=>p.cat===cat));}
+}
+
 function add(name,price){
  cart.push({name,price});
  document.getElementById("cart-count").innerText="🛒 "+cart.length;
 }
 
-// 📱 WHATSAPP
 function checkout(){
  if(cart.length===0){alert("Carrito vacío");return;}
- let msg="Pedido:%0A";
+ let msg="Pedido CoriShop:%0A";
  let total=0;
  cart.forEach(p=>{
   msg+=`- ${p.name} S/${p.price}%0A`;
   total+=p.price;
  });
- msg+=`Total S/${total}`;
+ msg+=`Total: S/${total}`;
  window.open(`https://wa.me/51986781426?text=${msg}`);
 }
 
-// 🔐 LOGIN
-function login(){
- const email=document.getElementById("email").value;
- const pass=document.getElementById("password").value;
-
- auth.signInWithEmailAndPassword(email,pass)
- .then(()=>{
-  document.getElementById("admin").style.display="block";
-  alert("Admin activado");
- });
-}
-
-// ➕ AGREGAR PRODUCTO
-function addProduct(){
- const name=document.getElementById("name").value;
- const price=parseFloat(document.getElementById("price").value);
- const cat=document.getElementById("cat").value;
- const img=document.getElementById("img").value;
-
- db.collection("products").add({name,price,cat,img});
-}
-
-// 🔍 BUSCADOR
-document.getElementById("search").addEventListener("input", e=>{
- const text=e.target.value.toLowerCase();
- const filtered=products.filter(p=>p.name.toLowerCase().includes(text));
-
- let html="";
- filtered.forEach(p=>{
-  html+=`
-  <div class="border p-4">
-    <img src="${p.img || 'https://via.placeholder.com/300'}" class="h-40 w-full">
-    <h3>${p.name}</h3>
-    <p>S/${p.price}</p>
-    <button onclick="add('${p.name}',${p.price})" class="bg-white text-black w-full">Agregar</button>
-  </div>`;
- });
-
- document.getElementById("products").innerHTML=html;
-});
-
-// 🚀 SUBIR PRODUCTOS AUTOMÁTICOS (USAR SOLO UNA VEZ)
-function cargarYanbal(){
- const productos = [```js
-function cargarYanbal(){
-
-const productos = [
-
- // 🌸 PERFUMES
- {name:"Ccori Rubí",price:137.50,cat:"Perfume"},
- {name:"Ccori Rosé",price:135,cat:"Perfume"},
- {name:"Ccori Pasión",price:140,cat:"Perfume"},
- {name:"Temptation Mujer",price:119,cat:"Perfume"},
- {name:"Temptation Mystic",price:150,cat:"Perfume"},
- {name:"Osadía",price:160,cat:"Perfume"},
- {name:"Ser Eau de Parfum",price:170,cat:"Perfume"},
- {name:"Cielo en Rosa",price:130,cat:"Perfume"},
- {name:"Cielo Eau de Parfum",price:125,cat:"Perfume"},
- {name:"Puro Amor",price:110,cat:"Perfume"},
- {name:"Celos",price:115,cat:"Perfume"},
- {name:"Musk",price:90,cat:"Perfume"},
- {name:"Adrenaline",price:95,cat:"Perfume"},
- {name:"OHM Hombre",price:100,cat:"Perfume"},
- {name:"Solo",price:105,cat:"Perfume"},
- {name:"Divina Chic",price:120,cat:"Perfume"},
-
- // 🌿 COLONIAS
- {name:"Mix & Chic",price:41.50,cat:"Perfume"},
- {name:"Eau Vitale",price:46,cat:"Perfume"},
- {name:"L’Essence",price:68,cat:"Perfume"},
- {name:"Xiss",price:49.50,cat:"Perfume"},
- {name:"Xiss Active",price:49.50,cat:"Perfume"},
-
- // 🎁 SETS
- {name:"Set Temptation",price:99.50,cat:"Perfume"},
- {name:"Set Ser",price:120,cat:"Perfume"},
- {name:"Set Oh La La",price:110,cat:"Perfume"},
- {name:"Set Ccori",price:150,cat:"Perfume"},
- {name:"Set Cielo",price:120,cat:"Perfume"},
-
- // 💄 MAQUILLAJE
- {name:"Base Antiedad Lifting",price:65,cat:"Maquillaje"},
- {name:"Corrector Antiedad",price:39,cat:"Maquillaje"},
- {name:"Polvo Compacto",price:55,cat:"Maquillaje"},
- {name:"Rubor Compacto",price:45,cat:"Maquillaje"},
- {name:"Iluminador Líquido",price:50,cat:"Maquillaje"},
- {name:"Labial Infinity Shine",price:39,cat:"Maquillaje"},
- {name:"Labial Mate",price:35,cat:"Maquillaje"},
- {name:"Labial Hidratante",price:35,cat:"Maquillaje"},
- {name:"Hydra Lips",price:38,cat:"Maquillaje"},
- {name:"Gloss Labial",price:30,cat:"Maquillaje"},
- {name:"Máscara de Pestañas",price:55,cat:"Maquillaje"},
- {name:"Delineador Líquido",price:42,cat:"Maquillaje"},
- {name:"Sombras de Ojos",price:60,cat:"Maquillaje"},
-
- // 🧴 CUIDADO FACIAL
- {name:"Agua Micelar",price:45,cat:"Cuidado"},
- {name:"Desmaquillador Bifásico",price:48,cat:"Cuidado"},
- {name:"Crema Antiedad",price:120,cat:"Cuidado"},
- {name:"Serum Facial",price:130,cat:"Cuidado"},
- {name:"Totalist Crema 5 en 1",price:95,cat:"Cuidado"},
- {name:"Control Blanc",price:110,cat:"Cuidado"},
-
- // 🧴 CORPORAL
- {name:"Loción Corporal Ccori",price:40,cat:"Cuidado"},
- {name:"Loción Corporal Cielo",price:42,cat:"Cuidado"},
- {name:"Jabón Perfumado",price:25,cat:"Cuidado"},
-
- // 🌿 NATURALES
- {name:"Bio Milk Shampoo",price:35,cat:"Cuidado"},
- {name:"Bio Milk Acondicionador",price:35,cat:"Cuidado"},
- {name:"Lúcuma Shampoo",price:35,cat:"Cuidado"},
- {name:"Uña de Gato Tratamiento",price:45,cat:"Cuidado"},
-
- // ☀️ PROTECCIÓN
- {name:"Total Block Protector Solar",price:70,cat:"Cuidado"},
-
- // 💍 JOYERÍA
- {name:"Collar Gyra Jade",price:90,cat:"Joyería"},
- {name:"Aretes Gyra Jade",price:60,cat:"Joyería"},
- {name:"Collar Floralia",price:85,cat:"Joyería"},
- {name:"Aretes Floralia",price:55,cat:"Joyería"},
- {name:"Pulsera Elegante",price:50,cat:"Joyería"},
- {name:"Anillo Ajustable",price:40,cat:"Joyería"},
- {name:"Set Collar + Aretes",price:110,cat:"Joyería"},
- {name:"Collar Corazón",price:60,cat:"Joyería"},
- {name:"Aretes Perla",price:55,cat:"Joyería"},
- {name:"Pulsera Dorada",price:48,cat:"Joyería"}
-
-];
-
-productos.forEach(p=>{
- db.collection("products").add(p);
-});
-
-alert("Productos cargados 🔥");
-
-}
-```
-
-
- productos.forEach(p=>{
-  db.collection("products").add(p);
- });
-}
-
-// 👉 DESCOMENTA UNA VEZ:
-// cargarYanbal();
-
-loadProducts();
+render(allProducts);
 
 </script>
 
