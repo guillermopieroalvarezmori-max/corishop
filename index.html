@@ -1,9 +1,16 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>CoriShop</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8">
+<title>CoriShop FINAL</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
 </head>
 
 <body class="bg-black text-white">
@@ -13,33 +20,141 @@
   <span id="cart-count">🛒 0</span>
 </nav>
 
-<section class="text-center p-10">
-  <h2 class="text-4xl font-bold">CoriShop</h2>
-  <p class="text-gray-400">Perfumes, Maquillaje,cuidado y Joyerías</p>
+<section class="text-center p-6">
+  <input id="search" placeholder="Buscar producto..." class="px-4 py-2 text-black">
 </section>
 
-<div class="flex justify-center gap-4 mb-6">
-  <button onclick="filter('Todos')" class="px-4 py-2 border">Todos</button>
-  <button onclick="filter('Perfume')" class="px-4 py-2 border">Perfumes</button>
-  <button onclick="filter('Maquillaje')" class="px-4 py-2 border">Maquillaje</button>
-  <button onclick="filter('Cuidado')" class="px-4 py-2 border">Cuidado</button>
-   <button onclick="filter('Joyería')" class="px-4 py-2 border">Joyería</button>
-</div>
+<section id="products" class="grid md:grid-cols-3 gap-6 p-6"></section>
 
-<section id="products" class="grid md:grid-cols-3 gap-6 p-10"></section>
+<!-- LOGIN -->
+<section class="p-6 border-t border-gray-800">
+  <h2>Login Admin</h2>
+  <input id="email" placeholder="Email" class="text-black px-2">
+  <input id="password" type="password" placeholder="Password" class="text-black px-2">
+  <button onclick="login()" class="bg-blue-500 px-2">Entrar</button>
+</section>
+
+<!-- ADMIN -->
+<section id="admin" style="display:none" class="p-6 border-t border-gray-800">
+  <h2>Panel Admin</h2>
+  <input id="name" placeholder="Nombre" class="text-black px-2">
+  <input id="price" placeholder="Precio" class="text-black px-2">
+  <input id="cat" placeholder="Categoría" class="text-black px-2">
+  <input id="img" placeholder="Imagen URL" class="text-black px-2">
+  <button onclick="addProduct()" class="bg-green-500 px-2">Agregar</button>
+</section>
 
 <div class="fixed bottom-5 right-5">
   <button onclick="checkout()" class="bg-green-500 px-4 py-2 rounded">
-    Comprar por WhatsApp
+    WhatsApp
   </button>
 </div>
 
 <script>
-  
-const allProducts = [
+
+// 🔥 CONFIG FIREBASE (REEMPLAZA ESTO)
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "TU_DOMINIO",
+  projectId: "TU_PROJECT_ID"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+let cart = [];
+let products = [];
+
+// 🔄 CARGAR PRODUCTOS
+function loadProducts(){
+ db.collection("products").onSnapshot(snapshot=>{
+  products=[];
+  let html="";
+  snapshot.forEach(doc=>{
+   const p = doc.data();
+   products.push(p);
+   html+=`
+   <div class="border p-4 rounded">
+    <img src="${p.img || 'https://via.placeholder.com/300'}" class="h-40 w-full object-cover">
+    <h3>${p.name}</h3>
+    <p>S/${p.price}</p>
+    <button onclick="add('${p.name}',${p.price})" class="bg-white text-black w-full mt-2">Agregar</button>
+   </div>`;
+  });
+  document.getElementById("products").innerHTML = html;
+ });
+}
+
+// 🛒 CARRITO
+function add(name,price){
+ cart.push({name,price});
+ document.getElementById("cart-count").innerText="🛒 "+cart.length;
+}
+
+// 📱 WHATSAPP
+function checkout(){
+ if(cart.length===0){alert("Carrito vacío");return;}
+ let msg="Pedido:%0A";
+ let total=0;
+ cart.forEach(p=>{
+  msg+=`- ${p.name} S/${p.price}%0A`;
+  total+=p.price;
+ });
+ msg+=`Total S/${total}`;
+ window.open(`https://wa.me/51986781426?text=${msg}`);
+}
+
+// 🔐 LOGIN
+function login(){
+ const email=document.getElementById("email").value;
+ const pass=document.getElementById("password").value;
+
+ auth.signInWithEmailAndPassword(email,pass)
+ .then(()=>{
+  document.getElementById("admin").style.display="block";
+  alert("Admin activado");
+ });
+}
+
+// ➕ AGREGAR PRODUCTO
+function addProduct(){
+ const name=document.getElementById("name").value;
+ const price=parseFloat(document.getElementById("price").value);
+ const cat=document.getElementById("cat").value;
+ const img=document.getElementById("img").value;
+
+ db.collection("products").add({name,price,cat,img});
+}
+
+// 🔍 BUSCADOR
+document.getElementById("search").addEventListener("input", e=>{
+ const text=e.target.value.toLowerCase();
+ const filtered=products.filter(p=>p.name.toLowerCase().includes(text));
+
+ let html="";
+ filtered.forEach(p=>{
+  html+=`
+  <div class="border p-4">
+    <img src="${p.img || 'https://via.placeholder.com/300'}" class="h-40 w-full">
+    <h3>${p.name}</h3>
+    <p>S/${p.price}</p>
+    <button onclick="add('${p.name}',${p.price})" class="bg-white text-black w-full">Agregar</button>
+  </div>`;
+ });
+
+ document.getElementById("products").innerHTML=html;
+});
+
+// 🚀 SUBIR PRODUCTOS AUTOMÁTICOS (USAR SOLO UNA VEZ)
+function cargarYanbal(){
+ const productos = [```js
+function cargarYanbal(){
+
+const productos = [
 
  // 🌸 PERFUMES
- {name:"Ccori Rubí",price:137.50,cat:"Perfume"},img: data:image/avif;base64,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
+ {name:"Ccori Rubí",price:137.50,cat:"Perfume"},
  {name:"Ccori Rosé",price:135,cat:"Perfume"},
  {name:"Ccori Pasión",price:140,cat:"Perfume"},
  {name:"Temptation Mujer",price:119,cat:"Perfume"},
@@ -67,22 +182,20 @@ const allProducts = [
  {name:"Set Temptation",price:99.50,cat:"Perfume"},
  {name:"Set Ser",price:120,cat:"Perfume"},
  {name:"Set Oh La La",price:110,cat:"Perfume"},
+ {name:"Set Ccori",price:150,cat:"Perfume"},
+ {name:"Set Cielo",price:120,cat:"Perfume"},
 
- // 💄 MAQUILLAJE ROSTRO
+ // 💄 MAQUILLAJE
  {name:"Base Antiedad Lifting",price:65,cat:"Maquillaje"},
  {name:"Corrector Antiedad",price:39,cat:"Maquillaje"},
  {name:"Polvo Compacto",price:55,cat:"Maquillaje"},
  {name:"Rubor Compacto",price:45,cat:"Maquillaje"},
  {name:"Iluminador Líquido",price:50,cat:"Maquillaje"},
-
- // 💋 LABIOS
- {name:"Labial Dúo Infinity Shine",price:39,cat:"Maquillaje"},
+ {name:"Labial Infinity Shine",price:39,cat:"Maquillaje"},
  {name:"Labial Mate",price:35,cat:"Maquillaje"},
  {name:"Labial Hidratante",price:35,cat:"Maquillaje"},
  {name:"Hydra Lips",price:38,cat:"Maquillaje"},
  {name:"Gloss Labial",price:30,cat:"Maquillaje"},
-
- // 👁️ OJOS
  {name:"Máscara de Pestañas",price:55,cat:"Maquillaje"},
  {name:"Delineador Líquido",price:42,cat:"Maquillaje"},
  {name:"Sombras de Ojos",price:60,cat:"Maquillaje"},
@@ -92,21 +205,22 @@ const allProducts = [
  {name:"Desmaquillador Bifásico",price:48,cat:"Cuidado"},
  {name:"Crema Antiedad",price:120,cat:"Cuidado"},
  {name:"Serum Facial",price:130,cat:"Cuidado"},
+ {name:"Totalist Crema 5 en 1",price:95,cat:"Cuidado"},
+ {name:"Control Blanc",price:110,cat:"Cuidado"},
 
- // 🧴 CUIDADO CORPORAL
- {name:"Loción Corporal",price:40,cat:"Cuidado"},
- {name:"Crema Hidratante",price:42,cat:"Cuidado"},
+ // 🧴 CORPORAL
+ {name:"Loción Corporal Ccori",price:40,cat:"Cuidado"},
+ {name:"Loción Corporal Cielo",price:42,cat:"Cuidado"},
  {name:"Jabón Perfumado",price:25,cat:"Cuidado"},
 
  // 🌿 NATURALES
  {name:"Bio Milk Shampoo",price:35,cat:"Cuidado"},
+ {name:"Bio Milk Acondicionador",price:35,cat:"Cuidado"},
  {name:"Lúcuma Shampoo",price:35,cat:"Cuidado"},
  {name:"Uña de Gato Tratamiento",price:45,cat:"Cuidado"},
 
  // ☀️ PROTECCIÓN
  {name:"Total Block Protector Solar",price:70,cat:"Cuidado"},
- {name:"Totalist Crema 5 en 1",price:95,cat:"Cuidado"},
- {name:"Control Blanc",price:110,cat:"Cuidado"},
 
  // 💍 JOYERÍA
  {name:"Collar Gyra Jade",price:90,cat:"Joyería"},
@@ -115,49 +229,35 @@ const allProducts = [
  {name:"Aretes Floralia",price:55,cat:"Joyería"},
  {name:"Pulsera Elegante",price:50,cat:"Joyería"},
  {name:"Anillo Ajustable",price:40,cat:"Joyería"},
- {name:"Set Collar + Aretes",price:110,cat:"Joyería"}
+ {name:"Set Collar + Aretes",price:110,cat:"Joyería"},
+ {name:"Collar Corazón",price:60,cat:"Joyería"},
+ {name:"Aretes Perla",price:55,cat:"Joyería"},
+ {name:"Pulsera Dorada",price:48,cat:"Joyería"}
 
 ];
-let cart=[];
 
-function render(products){
- const container=document.getElementById("products");
- container.innerHTML="";
- products.forEach(p=>{
-  container.innerHTML+=`
-  <div class="border border-gray-800 p-4 rounded">
-    <img src="${p.img}" class="mb-2 rounded">
-    <h3 class="font-bold">${p.name}</h3>
-    <p>S/${p.price}</p>
-    <button onclick="add('${p.name}',${p.price})" class="bg-white text-black w-full mt-2 py-1 rounded">Comprar</button>
-  </div>`;
+productos.forEach(p=>{
+ db.collection("products").add(p);
+});
+
+alert("Productos cargados 🔥");
+
+}
+```
+
+
+ productos.forEach(p=>{
+  db.collection("products").add(p);
  });
 }
 
-function filter(cat){
- if(cat==="Todos"){render(allProducts);}
- else{render(allProducts.filter(p=>p.cat===cat));}
-}
+// 👉 DESCOMENTA UNA VEZ:
+// cargarYanbal();
 
-function add(name,price){
- cart.push({name,price});
- document.getElementById("cart-count").innerText="🛒 "+cart.length;
-}
+loadProducts();
 
-function checkout(){
- if(cart.length===0){alert("Carrito vacío");return;}
- let msg="Pedido CoriShop:%0A";
- let total=0;
- cart.forEach(p=>{
-  msg+=`- ${p.name} S/${p.price}%0A`;
-  total+=p.price;
- });
- msg+=`Total: S/${total}`;
- window.open(`https://wa.me/51986781426?text=${msg}`);
-}
-
-render(allProducts);
 </script>
 
 </body>
 </html>
+```
